@@ -11,14 +11,13 @@ aliasesPath = File.expand_path("./aliases")
 require_relative 'scripts/php7dev.rb'
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+	config.ssh.username = "vagrant"
+	config.ssh.password = "vagrant"
+	config.ssh.insert_key = false
 	config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
 	if File.exists? aliasesPath then
 		config.vm.provision "file", source: aliasesPath, destination: "~/.bash_aliases"
 	end
-#	if File.exists? diffPath then
-#		config.vm.provision "file", source: diffPath, destination: "/tmp/php7dev.diff"
-#		config.vm.provision "shell", inline: '(cd /etc && sudo patch -p1 /etc/motd < /tmp/php7dev.diff) || true'
-#	end
 
 	Php7dev.configure(config, YAML::load(File.read(php7devYamlPath)))
 

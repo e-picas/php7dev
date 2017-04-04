@@ -1,26 +1,38 @@
 ---
-ip: "192.168.7.7"
+vm_name: "php7-server"
+vm_description: >
+    Serveur de démonstration pour la session de formation
+    "Développer avec le langage PHP" proposée par les [Éditions ENI](http://www.editions-eni.fr/).
+    
+    - machine basée sur <https://github.com/e-picas/php7dev> (forkée depuis <https://github.com/rlerdorf/php7dev>)
+    - machine virtuelle construite par Vagrant 1.9.3 sous VirtualBox 5.1.18 (MacOS Sierra)
+    - serveur:
+        - système Debian 3.2.68-1+deb7u1 - 64bits
+        - extensions "VBOX Guests Additions" installées
+        - Apache 2.4
+        - PHP 7.0
+    - nom de la machine: "php7-server"
+    - utilisateur/mot de passe: "vagrant"/"vagrant" (sudoer + groupes "www-data" "vboxsf")
+    - utilisateur et groupe du serveur web: "www-data" / "www-data"
+    - groupe pour le partage de fichiers: "vboxsf"
+
 memory: 1024
-cpus: 2
+cpus: 1
 
-authorize:
-    - ~/.ssh/id_rsa.pub
-    - ~/.ssh/id_dsa.pub
-
-keys:
-    - ~/.ssh/id_rsa
-    - ~/.ssh/id_dsa
+#ports:
+#    - guest: 80
+#      host: 8000
 
 networking:
     - public: true
 
-folders:
-#    - map: example-folder
-#      to: /path/in/vagrant/example-folder
+local_folders:
+    - map: "/Users/piwi/www/tutos/php-initiation-v2"
+      to: "/home/vagrant/php-scripts"
 
-sites:
-#    - hostname: example-site
-#      to: /home/vagrant/www/example-site
-
-databases:
-    - example_database
+synced_folders:
+    - map: "/Users/piwi/www/tutos/php-initiation-v2"
+      to: "/var/www/default/php-scripts-local/"
+      owner: "vagrant"
+      group: "www-data"
+      mount_options: ["dmode=775,fmode=664"]
