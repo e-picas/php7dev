@@ -2,17 +2,21 @@
 vm_name: "php7-server"
 vm_description: >
     Serveur de démonstration pour la session de formation
-    "Développer avec le langage PHP" proposée par les [Éditions ENI](http://www.editions-eni.fr/).
+    "Développer avec le langage PHP" proposée par les [Éditions ENI](http://www.editions-eni.fr/)
+    
+    Une fois lancé, le serveur devrait être accessible à l'URL <http://localhost:8000/>
     
     - machine basée sur <https://github.com/e-picas/php7dev> (forkée depuis <https://github.com/rlerdorf/php7dev>)
     - machine virtuelle construite par Vagrant 1.9.3 sous VirtualBox 5.1.18 (MacOS Sierra)
     - serveur:
-        - système Debian 3.2.68-1+deb7u1 - 64bits
+        - système Debian 8.5 (linux 3.2.68-1+deb7u1 - 64bits)
         - extensions "VBOX Guests Additions" installées
         - Apache 2.4
         - PHP 7.0
-    - nom de la machine: "php7-server"
-    - utilisateur/mot de passe: "vagrant"/"vagrant" (sudoer + groupes "www-data" "vboxsf")
+        - nom de la machine: "php7-server"
+    - utilisateur/mot de passe: "vagrant"/"vagrant"
+        - UID=1000 GID=1000
+        - sudoer + groupes "www-data" "vboxsf"
     - utilisateur et groupe du serveur web: "www-data" / "www-data"
     - groupe pour le partage de fichiers: "vboxsf"
 
@@ -27,6 +31,8 @@ networking:
     - public: true
 
 local_folders:
+    - map: "./bin/"
+      to: "/home/vagrant/bin/"
     - map: "/Users/piwi/www/tutos/php-initiation-v2"
       to: "/home/vagrant/php-scripts"
 

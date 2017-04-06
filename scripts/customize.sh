@@ -23,6 +23,8 @@ update-rc.d -f apache2 enable ;
 
 # copy local PHP files
 cp -r /home/vagrant/php-scripts /var/www/default/php-scripts/ ;
+cp /home/vagrant/php-scripts/mount-shared-folder.sh /mount-shared-folder.sh ;
+chmod a+x /mount-shared-folder.sh ;
 
 # enable Apache and set our scripts as default directory
 rm -f /var/www/default/index.* ;
@@ -54,28 +56,30 @@ cat > /etc/motd <<EOT
 Bienvenue sur ce serveur PHP de démonstration
 
 Cette machine virtuelle embarque:
-    - un système Debian 3.2
-    - le serveur web Apache 2.4
-    - PHP 7.0
+    - un système Debian 8.5
+    - un serveur web Apache 2.4
+    - un compilateur PHP 7.0
 Les sources du serveur web sont disponibles dans:
     /var/www/default/
 
-Pour plus d'infos, voyez la page https://github.com/e-picas/php7dev
+Pour plus d'infos, voyez la page <https://github.com/e-picas/php7dev>
 ----
 
 EOT
 
+## Optimize VM for export
 # <https://www.virtualbox.org/manual/ch08.html#vboxmanage-modifyvm>
 
-# share folder
-#VBoxManage sharedfolder add php7-server --name php-scripts-local --hostpath /Users/piwi/www/tutos/php-initiation-v2/
-#vagrant@php7-server$ sudo mount -t vboxsf -o uid=$UID php-scripts-local /var/www/default/php-scripts-local/
+# share folder (on host)
+#VBoxManage sharedfolder add php7-server --name php-scripts-local --hostpath /path/to/php-initiation/
+# share folder (on guest)
+#vagrant@php7-server$ sudo mount -t vboxsf -o uid=$UID,gid=$GID php-scripts-local /var/www/default/php-scripts-local/
 
-# switch to VDI disk
-#VBoxManage clonehd --format VDI /Users/piwi/VMs/php7-server/box-disk1.vmdk /Users/piwi/VMs/php7-server/php7-server-disk.vdi
+# switch to VDI disk (on host)
+#VBoxManage clonehd --format VDI /path/to/php7-server/box-disk1.vmdk /path/to/php7-server/php7-server-disk.vdi
 
 # decrease HD space (on guest)
 #dd if=/dev/zero of=/emptyfile bs=1M && rm -rf /emptyfile ;
 
 # decrease HD space (on host)
-#VBoxManage modifyhd somedisk.vdi --compact
+#VBoxManage modifyhd /path/to/php7-server/php7-server-disk.vdi --compact
